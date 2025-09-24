@@ -228,6 +228,7 @@
     sumAcc.textContent = `${accuracy}%`;
     sumTime.textContent = `${STATE.timeLimit}s`;
     sumTables.textContent = entry.tables;
+    renderBoard(board1);
     renderBoard(board2);
     showScreen(scrEnd);
   }
