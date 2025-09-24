@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Multiplication Dash — 1×1 … 12×12</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <main id="app" class="container">
+    <!-- START SCREEN -->
+    <section id="screen-start" class="screen">
+      <h1 class="app-title">Multiplication Dash</h1>
+      <p class="tagline">How many facts can you get before the timer ends?</p>
+
+      <div class="card">
+        <h2 class="section-title">1) Pick a time</h2>
+        <div class="time-choices" role="group" aria-label="Time limit">
+          <button class="chip time-chip" data-seconds="30">30s</button>
+          <button class="chip time-chip selected" data-seconds="60">60s</button>
+          <button class="chip time-chip" data-seconds="90">90s</button>
+          <button class="chip time-chip" data-seconds="120">120s</button>
+          <label class="chip custom-time">
+            <input id="custom-seconds" type="number" min="10" max="600" step="5" placeholder="Custom s" aria-label="Custom seconds" />
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">2) Choose tables to practice</h2>
+        <div class="table-controls">
+          <button id="tables-all" class="pill small">All</button>
+          <button id="tables-clear" class="pill small">Clear</button>
+        </div>
+        <div id="tables-grid" class="tables-grid" role="group" aria-label="Times tables">
+          <!-- 1..12 chips injected by JS -->
+        </div>
+        <p class="hint">Tip: Picking 3 and 4 focuses on 3× and 4× facts.</p>
+      </div>
+
+      <div class="actions">
+        <button id="btn-start" class="cta">Start</button>
+      </div>
+
+      <section class="card">
+        <h2 class="section-title">Leaderboard</h2>
+        <div id="board"></div>
+        <div class="board-actions">
+          <button id="btn-reset" class="pill danger small" title="Clear saved scores from this browser">Reset Leaderboard</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="screen-game" class="screen hidden" aria-live="polite">
+      <header class="hud">
+        <div class="hud-item">
+          <div id="timer" class="timer" role="timer" aria-live="polite">60</div>
+          <div class="hud-label">seconds</div>
+        </div>
+        <div class="hud-item">
+          <div id="score" class="stat">0</div>
+          <div class="hud-label">correct</div>
+        </div>
+        <div class="hud-item">
+          <div id="accuracy" class="stat">100%</div>
+          <div class="hud-label">accuracy</div>
+        </div>
+      </header>
+
+      <div class="stage">
+        <div id="question" class="question" aria-label="Question">3 × 4 = ?</div>
+        <div class="answer-wrap">
+          <input id="answer" class="answer-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Your answer" />
+        </div>
+
+        <div class="keypad" aria-label="On-screen keypad">
+          <button class="key">7</button>
+          <button class="key">8</button>
+          <button class="key">9</button>
+          <button class="key">4</button>
+          <button class="key">5</button>
+          <button class="key">6</button>
+          <button class="key">1</button>
+          <button class="key">2</button>
+          <button class="key">3</button>
+          <button class="key zero">0</button>
+          <button class="key back" aria-label="Delete last">⌫</button>
+          <button class="key enter" aria-label="Submit answer">Enter</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- END SCREEN -->
+    <section id="screen-end" class="screen hidden">
+      <h2>Time!</h2>
+      <div class="summary card">
+        <div class="summary-row"><span>Correct:</span><strong id="sum-correct">0</strong></div>
+        <div class="summary-row"><span>Questions answered:</span><strong id="sum-total">0</strong></div>
+        <div class="summary-row"><span>Accuracy:</span><strong id="sum-accuracy">0%</strong></div>
+        <div class="summary-row"><span>Time limit:</span><strong id="sum-time">60s</strong></div>
+        <div class="summary-row"><span>Tables:</span><strong id="sum-tables">All 1–12</strong></div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-play-again" class="cta">Play again</button>
+        <button id="btn-home" class="pill">Home</button>
+      </div>
+
+      <section class="card">
+        <h2 class="section-title">Leaderboard</h2>
+        <div id="board2"></div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Non-visual ARIA live region for feedback -->
+  <div id="live" class="sr-only" aria-live="polite"></div>
+</body>
+</html>
