@@ -204,7 +204,7 @@ export class MathFactsGame extends Game {
     this.elements.customSeconds.addEventListener('change', () => {
       const n = Number(this.elements.customSeconds.value);
       if (Number.isInteger(n) && n >= 10 && n <= 600) {
-        this.selectTime(n);
+        this.selectTime(n, true); // Pass true to indicate this is from custom input
         this.elements.timeChips.forEach(c => c.classList.remove('selected'));
       } else {
         speak('Enter between 10 and 600 seconds');
@@ -276,13 +276,16 @@ export class MathFactsGame extends Game {
     );
   }
 
-  selectTime(seconds) {
+  selectTime(seconds, fromCustomInput = false) {
     this.state.timeLimit = seconds;
     this.state.remaining = seconds;
     this.elements.timeChips.forEach(c =>
       c.classList.toggle('selected', Number(c.dataset.seconds) === seconds)
     );
-    if (this.elements.customSeconds.value) this.elements.customSeconds.value = '';
+    // Only clear custom input if selection came from a preset button, not from the custom input itself
+    if (!fromCustomInput && this.elements.customSeconds.value) {
+      this.elements.customSeconds.value = '';
+    }
   }
 
   nextQuestion() {
