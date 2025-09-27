@@ -122,7 +122,7 @@ export class MathFactsGame extends Game {
         <div class="stage">
           <div class="question" aria-label="Question">3 ${this.config.operation} 4 = ?</div>
           <div class="answer-wrap">
-            <input class="answer-input" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Your answer" />
+            <div class="answer-input" aria-label="Your answer" role="textbox" aria-readonly="true"></div>
           </div>
 
           <div class="keypad" aria-label="On-screen keypad">
@@ -226,12 +226,6 @@ export class MathFactsGame extends Game {
 
     // Keyboard support
     document.addEventListener('keydown', (e) => this.handleKeydown(e));
-    this.elements.answerEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        this.submitAnswer();
-      }
-    });
 
     // Leaderboard
     this.elements.btnReset.addEventListener('click', () => {
@@ -305,14 +299,13 @@ export class MathFactsGame extends Game {
     const { a, b } = this.state.current;
     this.elements.qEl.textContent = `${a} ${this.config.operation} ${b} = ?`;
     this.elements.qEl.classList.remove('correct', 'wrong');
-    this.elements.answerEl.value = '';
-    this.elements.answerEl.focus();
+    this.elements.answerEl.textContent = '';
   }
 
   submitAnswer() {
     if (!this.state.running) return;
-    const val = Number(this.elements.answerEl.value.trim());
-    if (Number.isNaN(val)) return;
+    const val = Number(this.elements.answerEl.textContent.trim());
+    if (Number.isNaN(val) || this.elements.answerEl.textContent.trim() === '') return;
 
     const correct = (val === this.state.current.result);
     this.state.total += 1;
@@ -344,7 +337,6 @@ export class MathFactsGame extends Game {
     this.state.startedAt = Date.now();
     showScreen(this.elements.scrGame, [this.elements.scrStart, this.elements.scrGame, this.elements.scrEnd]);
     this.nextQuestion();
-    this.elements.answerEl.focus({ preventScroll: true });
 
     clearInterval(this.state.tickHandle);
     this.state.tickHandle = setInterval(() => {
@@ -399,15 +391,14 @@ export class MathFactsGame extends Game {
       return;
     }
     if (key.classList.contains('back')) {
-      this.elements.answerEl.value = this.elements.answerEl.value.slice(0, -1);
+      this.elements.answerEl.textContent = this.elements.answerEl.textContent.slice(0, -1);
       return;
     }
     if (/\d/.test(label)) {
-      if (this.elements.answerEl.value.length < 3) {
-        this.elements.answerEl.value += label;
+      if (this.elements.answerEl.textContent.length < 3) {
+        this.elements.answerEl.textContent += label;
       }
     }
-    this.elements.answerEl.focus({ preventScroll: true });
   }
 
   handleKeydown(e) {

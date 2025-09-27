@@ -148,6 +148,22 @@ body{
   border:2px solid #2a386f;
   background:#0e1732;
   color:var(--ink);
+  position:relative;
+}
+
+.answer-input:after {
+  content: '|';
+  animation: cursor-blink 1s infinite;
+  color:var(--muted);
+}
+
+.answer-input:not(:empty):after {
+  display: none;
+}
+
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .keypad{
@@ -167,6 +183,7 @@ body{
   cursor:pointer;
   user-select:none;
   min-height:64px; /* touch target */
+  color:var(--ink);
 }
 .key.zero{grid-column:1/2}
 .key.back{grid-column:2/3}
