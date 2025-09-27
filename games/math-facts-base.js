@@ -59,7 +59,7 @@ export class MathFactsGame extends Game {
     this.leaderboard = new Leaderboard(gameId);
     this.state = {
       timeLimit: 60,
-      selectedTables: new Set(Array.from({length: 12}, (_, i) => i + 1)), // 1..12
+      selectedTables: new Set(), // None selected by default
       running: false,
       score: 0,
       total: 0,
@@ -273,7 +273,7 @@ export class MathFactsGame extends Game {
     this.elements.tablesGrid.innerHTML = '';
     for (let n = 1; n <= 12; n++) {
       const btn = document.createElement('button');
-      btn.className = 'table-chip selected';
+      btn.className = 'table-chip';
       btn.textContent = `${n}${this.config.operation}`;
       btn.dataset.n = String(n);
       btn.addEventListener('click', () => {
