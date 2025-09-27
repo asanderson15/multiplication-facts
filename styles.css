@@ -125,6 +125,32 @@ body{
 }
 .hud-item{display:flex; flex-direction:column; align-items:center}
 .hud-label{color:var(--muted); font-size:13px}
+
+.hud-exit{
+  margin-left:auto;
+}
+.btn-exit{
+  background:#1a2045;
+  border:1px solid #2a386f;
+  color:var(--muted);
+  border-radius:8px;
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.btn-exit:hover{
+  background:#2a386f;
+  color:var(--ink);
+  border-color:var(--danger);
+}
+.btn-exit:active{
+  transform:scale(0.95);
+}
 .timer{
   font-size:38px; font-weight:800;
   background:#0e1732; border:2px solid #2a386f; border-radius:18px; padding:6px 16px; min-width:100px; text-align:center;

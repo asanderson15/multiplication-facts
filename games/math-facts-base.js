@@ -15,6 +15,33 @@ export class Game {
   async cleanup() {
     // Optional cleanup
   }
+
+  // Reusable exit functionality for any game type
+  addExitButton(gameScreen, position = 'hud') {
+    if (position === 'hud') {
+      const hud = gameScreen.querySelector('.hud');
+      if (hud) {
+        const exitItem = document.createElement('div');
+        exitItem.className = 'hud-item hud-exit';
+        exitItem.innerHTML = '<button class="btn-exit" aria-label="Exit game" title="Exit game">✕</button>';
+        hud.appendChild(exitItem);
+
+        const exitBtn = exitItem.querySelector('.btn-exit');
+        exitBtn.addEventListener('click', () => this.confirmExit());
+      }
+    }
+  }
+
+  confirmExit() {
+    if (confirm('Exit game? Your progress will be lost.')) {
+      this.goHome();
+    }
+  }
+
+  goHome() {
+    // Signal that we want to go back to splash screen
+    if (this.onHome) this.onHome();
+  }
 }
 
 export class MathFactsGame extends Game {
@@ -55,6 +82,10 @@ export class MathFactsGame extends Game {
     this.renderTablesGrid();
     this.selectTime(60);
     this.leaderboard.renderBoard(this.elements.board1);
+
+    // Add exit button to game screen
+    this.addExitButton(this.elements.scrGame, 'hud');
+
     showScreen(this.elements.scrStart, [this.elements.scrStart, this.elements.scrGame, this.elements.scrEnd]);
   }
 
@@ -410,11 +441,6 @@ export class MathFactsGame extends Game {
     } else if (!/\d/.test(e.key)) {
       e.preventDefault();
     }
-  }
-
-  goHome() {
-    // Signal that we want to go back to splash screen
-    if (this.onHome) this.onHome();
   }
 
   async cleanup() {
