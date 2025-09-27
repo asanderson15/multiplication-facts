@@ -23,6 +23,13 @@ const gameRegistry = {
     symbol: '−',
     description: 'Master your subtraction facts',
     color: 'var(--focus)' // orange
+  },
+  'division': {
+    module: () => import('./games/division.js'),
+    title: 'Division Masters',
+    symbol: '÷',
+    description: 'Master your division facts',
+    color: 'var(--danger)' // red
   }
 };
 
