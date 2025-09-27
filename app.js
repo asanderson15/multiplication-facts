@@ -9,9 +9,14 @@ const gameRegistry = {
     symbol: '×',
     description: 'Master your times tables',
     color: 'var(--accent)' // green
+  },
+  'addition': {
+    module: () => import('./games/addition.js'),
+    title: 'Addition Sprint',
+    symbol: '+',
+    description: 'Master your addition facts',
+    color: 'var(--secondary)' // blue
   }
-  // Future games will be added here:
-  // 'addition': { module: () => import('./games/addition.js'), title: 'Addition Sprint', symbol: '+', ... }
 };
 
 class MathFactsApp {
