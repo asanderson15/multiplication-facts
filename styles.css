@@ -202,3 +202,69 @@ body{
 button:focus-visible, input:focus-visible{
   outline:2px solid var(--focus); outline-offset:2px;
 }
+
+/* Splash screen styles */
+.splash-content {
+  text-align: center;
+}
+
+.splash-tagline {
+  color: var(--muted);
+  font-size: 18px;
+  margin: 0 0 32px;
+}
+
+.game-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.game-card {
+  background: var(--card);
+  border: 2px solid #1f2b58;
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--game-color, var(--accent-2));
+  box-shadow: 0 15px 35px rgba(0,0,0,.4), 0 0 0 2px rgba(var(--game-color-rgb, 96, 165, 250), 0.2);
+}
+
+.game-card:active {
+  transform: translateY(0px);
+}
+
+.game-symbol {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--game-color, var(--accent-2));
+  margin-bottom: 16px;
+  text-shadow: 0 0 20px rgba(var(--game-color-rgb, 96, 165, 250), 0.3);
+}
+
+.game-info {
+  text-align: left;
+}
+
+.game-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.game-description {
+  color: var(--muted);
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
