@@ -15,7 +15,14 @@ const gameRegistry = {
     title: 'Addition Sprint',
     symbol: '+',
     description: 'Master your addition facts',
-    color: 'var(--secondary)' // blue
+    color: 'var(--accent-2)' // blue
+  },
+  'subtraction': {
+    module: () => import('./games/subtraction.js'),
+    title: 'Subtraction Challenge',
+    symbol: '−',
+    description: 'Master your subtraction facts',
+    color: 'var(--focus)' // orange
   }
 };
 
