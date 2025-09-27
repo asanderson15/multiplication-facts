@@ -122,6 +122,7 @@ export class MathFactsGame extends Game {
 
         <div class="actions">
           <button class="btn-start cta">Start</button>
+          <button class="btn-home-start pill">Home</button>
         </div>
 
         <section class="card">
@@ -207,6 +208,7 @@ export class MathFactsGame extends Game {
       btnAll: this.container.querySelector('.tables-all'),
       btnClear: this.container.querySelector('.tables-clear'),
       btnStart: this.container.querySelector('.btn-start'),
+      btnHomeStart: this.container.querySelector('.btn-home-start'),
       timerEl: this.container.querySelector('.timer'),
       scoreEl: this.container.querySelector('.score'),
       accEl: this.container.querySelector('.accuracy'),
@@ -251,6 +253,7 @@ export class MathFactsGame extends Game {
     this.elements.btnStart.addEventListener('click', () => this.startRun());
     this.elements.btnAgain.addEventListener('click', () => this.startRun());
     this.elements.btnHome.addEventListener('click', () => this.goHome());
+    this.elements.btnHomeStart.addEventListener('click', () => this.goHome());
 
     // Keypad
     this.elements.keypad.addEventListener('click', (e) => this.handleKeypadClick(e));
