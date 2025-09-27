@@ -87,6 +87,7 @@ body{
   text-align:center;
   cursor:pointer;
   user-select:none;
+  color:white;
 }
 .table-chip.selected{border-color:var(--accent); outline:2px solid rgba(110,231,183,.2)}
 
