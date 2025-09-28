@@ -12,19 +12,100 @@
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
+
+/* PWA and iPad optimizations */
+html,body{
+  height:100%;
+  /* Prevent zooming and scrolling in PWA mode */
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  /* Prevent horizontal scrolling */
+  overflow-x: hidden;
+}
+
 body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji","Segoe UI Emoji";
   background: radial-gradient(1200px 700px at 50% -200px, #1a2250 0%, #0b1020 60%) fixed;
   color:var(--ink);
   -webkit-tap-highlight-color: transparent;
+  /* PWA fullscreen optimizations */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Safe area support for notched iPads */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Restore text selection for input elements */
+input, textarea, [contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Prevent pinch zoom on all elements */
+* {
+  touch-action: manipulation;
 }
 
 .container{
   max-width:900px;
   margin:0 auto;
   padding:24px clamp(16px, 3vw, 28px) 48px;
+}
+
+/* iPad-specific optimizations */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding: 32px clamp(32px, 5vw, 64px) 64px;
+  }
+
+  .app-title {
+    font-size: clamp(36px, 6vw, 56px);
+  }
+
+  /* Optimize touch targets for iPad */
+  .chip, .table-chip, .pill {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+
+  /* Larger grids for better iPad experience */
+  .tables-grid {
+    grid-template-columns: repeat(8, minmax(0,1fr));
+    gap: 12px;
+  }
+
+  .time-choices {
+    gap: 16px;
+  }
+}
+
+/* Landscape iPad optimizations */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  .container {
+    max-width: 1200px;
+    padding: 40px 80px 80px;
+  }
+
+  .tables-grid {
+    grid-template-columns: repeat(10, minmax(0,1fr));
+  }
+}
+
+/* PWA-specific styles */
+.pwa-mode {
+  /* Additional styles when running as PWA */
+  -webkit-app-region: no-drag;
+}
+
+/* Hide elements in PWA mode if needed */
+@media (display-mode: standalone) {
+  /* Any PWA-specific hiding/showing of elements */
 }
 
 .app-title{

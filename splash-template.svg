@@ -1,0 +1,33 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <!-- Background gradient -->
+  <defs>
+    <radialGradient id="bgGradient" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" style="stop-color:#1a2250;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#0b1020;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <rect width="100" height="100" fill="url(#bgGradient)"/>
+
+  <!-- App Icon centered -->
+  <g transform="translate(50,40)">
+    <!-- Icon background -->
+    <circle cx="0" cy="0" r="12" fill="#121a33" stroke="#6ee7b7" stroke-width="0.5"/>
+
+    <!-- 2x2 grid lines -->
+    <line x1="0" y1="-10" x2="0" y2="10" stroke="#a6b3da" stroke-width="0.3"/>
+    <line x1="-10" y1="0" x2="10" y2="0" stroke="#a6b3da" stroke-width="0.3"/>
+
+    <!-- Math symbols -->
+    <text x="-5" y="-2" font-family="ui-sans-serif, system-ui, Arial" font-size="6" font-weight="bold" fill="#6ee7b7" text-anchor="middle" dominant-baseline="middle">×</text>
+    <text x="5" y="-2" font-family="ui-sans-serif, system-ui, Arial" font-size="6" font-weight="bold" fill="#60a5fa" text-anchor="middle" dominant-baseline="middle">+</text>
+    <text x="-5" y="4" font-family="ui-sans-serif, system-ui, Arial" font-size="6" font-weight="bold" fill="#f59e0b" text-anchor="middle" dominant-baseline="middle">−</text>
+    <text x="5" y="4" font-family="ui-sans-serif, system-ui, Arial" font-size="6" font-weight="bold" fill="#ff6b6b" text-anchor="middle" dominant-baseline="middle">÷</text>
+  </g>
+
+  <!-- App title -->
+  <text x="50" y="65" font-family="ui-sans-serif, system-ui, Arial" font-size="7" font-weight="bold" fill="#e6ecff" text-anchor="middle">Math Facts</text>
+
+  <!-- Tagline -->
+  <text x="50" y="75" font-family="ui-sans-serif, system-ui, Arial" font-size="3.5" fill="#a6b3da" text-anchor="middle">Master your math skills</text>
+</svg>

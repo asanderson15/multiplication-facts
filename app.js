@@ -40,14 +40,72 @@ class MathFactsApp {
       splash: null,
       gameContainer: null
     };
+    this.deferredPrompt = null;
   }
 
   async init() {
     this.screens.splash = $('#screen-splash');
     this.screens.gameContainer = $('#game-container');
 
+    // Initialize PWA features
+    await this.initPWA();
+
     this.renderSplashScreen();
     this.showSplash();
+  }
+
+  async initPWA() {
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        console.log('Service Worker registered successfully:', registration);
+
+        // Listen for updates
+        registration.addEventListener('updatefound', () => {
+          console.log('New service worker version available');
+          const newWorker = registration.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available, could show update notification
+              console.log('App update available');
+            }
+          });
+        });
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
+    }
+
+    // Handle PWA installation prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('PWA install prompt available');
+      e.preventDefault();
+      this.deferredPrompt = e;
+    });
+
+    // Handle successful PWA installation
+    window.addEventListener('appinstalled', () => {
+      console.log('PWA installed successfully');
+      this.deferredPrompt = null;
+    });
+
+    // Detect if running as PWA
+    if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('Running as PWA');
+      document.body.classList.add('pwa-mode');
+    }
+
+    // Handle orientation changes for better iPad experience
+    if (screen.orientation) {
+      screen.orientation.addEventListener('change', () => {
+        // Small delay to allow the orientation to fully change
+        setTimeout(() => {
+          // Trigger a reflow to handle any layout issues
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
 
   renderSplashScreen() {

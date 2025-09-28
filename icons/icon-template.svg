@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="72" ry="72" fill="#121a33"/>
+
+  <!-- Border -->
+  <rect x="8" y="8" width="496" height="496" rx="64" ry="64" fill="none" stroke="#6ee7b7" stroke-width="4"/>
+
+  <!-- Vertical divider -->
+  <line x1="256" y1="60" x2="256" y2="452" stroke="#a6b3da" stroke-width="3"/>
+
+  <!-- Horizontal divider -->
+  <line x1="60" y1="256" x2="452" y2="256" stroke="#a6b3da" stroke-width="3"/>
+
+  <!-- Top-left: × (multiplication) -->
+  <g transform="translate(128,128)">
+    <text x="0" y="0" font-family="ui-sans-serif, system-ui, -apple-system" font-size="120" font-weight="bold" fill="#6ee7b7" text-anchor="middle" dominant-baseline="middle">×</text>
+  </g>
+
+  <!-- Top-right: + (addition) -->
+  <g transform="translate(384,128)">
+    <text x="0" y="0" font-family="ui-sans-serif, system-ui, -apple-system" font-size="120" font-weight="bold" fill="#60a5fa" text-anchor="middle" dominant-baseline="middle">+</text>
+  </g>
+
+  <!-- Bottom-left: − (subtraction) -->
+  <g transform="translate(128,384)">
+    <text x="0" y="0" font-family="ui-sans-serif, system-ui, -apple-system" font-size="120" font-weight="bold" fill="#f59e0b" text-anchor="middle" dominant-baseline="middle">−</text>
+  </g>
+
+  <!-- Bottom-right: ÷ (division) -->
+  <g transform="translate(384,384)">
+    <text x="0" y="0" font-family="ui-sans-serif, system-ui, -apple-system" font-size="120" font-weight="bold" fill="#ff6b6b" text-anchor="middle" dominant-baseline="middle">÷</text>
+  </g>
+</svg>
