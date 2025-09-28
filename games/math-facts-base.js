@@ -73,6 +73,7 @@ export class MathFactsGame extends Game {
 
     // Elements will be set during init
     this.elements = {};
+    this.boundKeydownHandler = null;
   }
 
   async init(container) {
@@ -259,7 +260,8 @@ export class MathFactsGame extends Game {
     this.elements.keypad.addEventListener('click', (e) => this.handleKeypadClick(e));
 
     // Keyboard support
-    document.addEventListener('keydown', (e) => this.handleKeydown(e));
+    this.boundKeydownHandler = (e) => this.handleKeydown(e);
+    document.addEventListener('keydown', this.boundKeydownHandler);
 
     // Leaderboard
     this.elements.btnReset.addEventListener('click', () => {
@@ -276,25 +278,42 @@ export class MathFactsGame extends Game {
       btn.className = 'table-chip';
       btn.textContent = `${n}${this.config.operation}`;
       btn.dataset.n = String(n);
+      this.updateTableChip(btn, n);
       btn.addEventListener('click', () => {
         this.toggleTable(n);
         this.updateTableChip(btn, n);
       });
       this.elements.tablesGrid.appendChild(btn);
     }
+    this.syncTableSelectionState();
   }
 
   toggleTable(n) {
-    if (this.state.selectedTables.has(n)) this.state.selectedTables.delete(n);
-    else this.state.selectedTables.add(n);
-    if (this.state.selectedTables.size === 0) {
+    if (this.state.selectedTables.has(n)) {
+      this.state.selectedTables.delete(n);
+    } else {
       this.state.selectedTables.add(n);
-      speak('At least one table must be selected');
     }
+
+    if (this.state.selectedTables.size === 0) {
+      speak('Select at least one table before starting');
+    }
+
+    this.syncTableSelectionState();
   }
 
   updateTableChip(btn, n) {
     btn.classList.toggle('selected', this.state.selectedTables.has(n));
+  }
+
+  syncTableSelectionState() {
+    const hasSelection = this.state.selectedTables.size > 0;
+    if (this.elements.btnStart) {
+      this.elements.btnStart.disabled = !hasSelection;
+    }
+    if (this.elements.btnAgain) {
+      this.elements.btnAgain.disabled = !hasSelection;
+    }
   }
 
   setAllTables(on) {
@@ -302,6 +321,10 @@ export class MathFactsGame extends Game {
     this.container.querySelectorAll('.table-chip').forEach((btn) =>
       this.updateTableChip(btn, Number(btn.dataset.n))
     );
+    this.syncTableSelectionState();
+    if (!on) {
+      speak('Select at least one table before starting');
+    }
   }
 
   selectTime(seconds, fromCustomInput = false) {
@@ -318,6 +341,12 @@ export class MathFactsGame extends Game {
 
   nextQuestion() {
     const tables = Array.from(this.state.selectedTables);
+    if (tables.length === 0) {
+      console.error('Cannot generate question without selected tables');
+      speak('Select at least one table before starting');
+      this.state.running = false;
+      return;
+    }
     const a = tables[Math.floor(Math.random() * tables.length)];
     const b = Math.floor(Math.random() * 12) + 1;
     const pair = `${a}${this.config.operation}${b}`;
@@ -362,6 +391,11 @@ export class MathFactsGame extends Game {
   }
 
   startRun() {
+    if (this.state.selectedTables.size === 0) {
+      speak('Select at least one table before starting.');
+      this.syncTableSelectionState();
+      return;
+    }
     this.state.running = true;
     this.state.score = 0;
     this.state.total = 0;
@@ -437,11 +471,35 @@ export class MathFactsGame extends Game {
 
   handleKeydown(e) {
     if (this.elements.scrGame.classList.contains('hidden')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
     if (e.key === 'Enter') {
+      e.preventDefault();
       this.submitAnswer();
-    } else if (e.key === 'Backspace') {
-      // default behavior ok
-    } else if (!/\d/.test(e.key)) {
+      return;
+    }
+
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      e.preventDefault();
+      this.elements.answerEl.textContent = this.elements.answerEl.textContent.slice(0, -1);
+      return;
+    }
+
+    if (/^\d$/.test(e.key)) {
+      e.preventDefault();
+      if (this.elements.answerEl.textContent.length < 3) {
+        this.elements.answerEl.textContent += e.key;
+      }
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      this.confirmExit();
+      return;
+    }
+
+    if (e.key.length === 1) {
       e.preventDefault();
     }
   }
@@ -449,5 +507,9 @@ export class MathFactsGame extends Game {
   async cleanup() {
     clearInterval(this.state.tickHandle);
     this.state.running = false;
+    if (this.boundKeydownHandler) {
+      document.removeEventListener('keydown', this.boundKeydownHandler);
+      this.boundKeydownHandler = null;
+    }
   }
 }
