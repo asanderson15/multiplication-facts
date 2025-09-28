@@ -2,7 +2,7 @@
   "name": "Math Facts",
   "short_name": "Math Facts",
   "description": "Master your math facts with multiplication, addition, subtraction, and division games",
-  "start_url": "/",
+  "start_url": "/multiplication-facts",
   "display": "fullscreen",
   "orientation": "any",
   "theme_color": "#0b1020",
