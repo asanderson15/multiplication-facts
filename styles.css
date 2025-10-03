@@ -436,34 +436,31 @@ button:focus-visible, input:focus-visible{
 
 /* Times Table Sprint - Two Column Layout */
 .sprint-layout {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 20px;
+  display: flex;
+  gap: 24px;
   align-items: start;
-  max-height: calc(100vh - 180px);
-  overflow: hidden;
+  justify-content: center;
 }
 
 .problems-column {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .keypad-column {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* Times Table Sprint - Problems Grid */
 .problems-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
-  overflow-y: auto;
-  max-height: calc(100vh - 180px);
-  padding-right: 8px;
 }
 
 .problem-item {
@@ -476,9 +473,10 @@ button:focus-visible, input:focus-visible{
   text-align: left;
   position: relative;
   transition: all 0.2s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  width: fit-content;
 }
 
 .problem-item.active {
@@ -563,46 +561,48 @@ button:focus-visible, input:focus-visible{
 
 /* Compact keypad for sprint mode */
 .sprint-layout .keypad {
-  width: 240px;
-  gap: 8px;
+  width: 280px;
+  gap: 10px;
 }
 
 .sprint-layout .key {
-  font-size: 24px;
-  padding: 12px 8px;
-  min-height: 54px;
+  font-size: 26px;
+  padding: 16px 10px;
+  min-height: 64px;
 }
 
 /* Mobile adjustments for Times Table Sprint */
 @media (max-width: 767px) {
   .sprint-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 16px;
+    align-items: center;
   }
 
   .keypad-column {
     width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
+    max-width: 360px;
   }
 
   .sprint-layout .keypad {
     width: 100%;
-  }
-
-  .problems-grid {
-    max-height: 400px;
   }
 }
 
 /* iPad optimizations for Times Table Sprint */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .sprint-layout .keypad {
-    width: 280px;
+    width: 320px;
   }
 
   .sprint-layout .key {
-    min-height: 60px;
+    min-height: 68px;
+    font-size: 28px;
+  }
+
+  .problem-item {
+    font-size: 22px;
+    padding: 14px 16px;
   }
 
   .factor-grid {
@@ -618,6 +618,15 @@ button:focus-visible, input:focus-visible{
 
 /* Landscape iPad optimizations for Times Table Sprint */
 @media screen and (min-width: 1024px) and (orientation: landscape) {
+  .sprint-layout .keypad {
+    width: 340px;
+  }
+
+  .sprint-layout .key {
+    min-height: 72px;
+    font-size: 30px;
+  }
+
   .factor-grid {
     grid-template-columns: repeat(10, minmax(0, 1fr));
   }
