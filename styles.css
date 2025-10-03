@@ -434,20 +434,43 @@ button:focus-visible, input:focus-visible{
   outline: 2px solid rgba(96, 165, 250, .2);
 }
 
+/* Times Table Sprint - Two Column Layout */
+.sprint-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: start;
+  max-height: calc(100vh - 180px);
+  overflow: hidden;
+}
+
+.problems-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.keypad-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 /* Times Table Sprint - Problems Grid */
 .problems-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  max-width: 600px;
-  margin: 0 auto 20px;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  padding-right: 8px;
 }
 
 .problem-item {
   background: #0e1732;
   border: 2px solid #2a386f;
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   font-size: 20px;
   font-weight: 600;
   text-align: left;
@@ -455,14 +478,13 @@ button:focus-visible, input:focus-visible{
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
 }
 
 .problem-item.active {
   border-color: var(--accent-2);
   background: rgba(96, 165, 250, 0.1);
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
-  transform: scale(1.02);
 }
 
 .problem-item.completed {
@@ -472,16 +494,39 @@ button:focus-visible, input:focus-visible{
 }
 
 .problem-text {
-  flex: 1;
+  white-space: nowrap;
 }
 
-.problem-answer {
+.problem-input-box {
+  min-width: 60px;
+  height: 32px;
+  background: #0b1020;
+  border: 2px solid #2a386f;
+  border-radius: 8px;
+  padding: 4px 8px;
   font-weight: 700;
   color: var(--accent-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 18px;
 }
 
-.problem-item.completed .problem-answer {
+.problem-item.active .problem-input-box {
+  border-color: var(--accent-2);
+  background: rgba(96, 165, 250, 0.15);
+}
+
+.problem-item.active .problem-input-box:empty::after {
+  content: '|';
+  animation: cursor-blink 1s infinite;
+  color: var(--muted);
+}
+
+.problem-item.completed .problem-input-box {
   color: var(--accent);
+  border-color: rgba(110, 231, 183, 0.3);
 }
 
 .problem-check {
@@ -490,6 +535,7 @@ button:focus-visible, input:focus-visible{
   opacity: 0;
   transform: scale(0.5);
   transition: all 0.3s ease;
+  margin-left: auto;
 }
 
 .problem-item.completed .problem-check {
@@ -505,7 +551,7 @@ button:focus-visible, input:focus-visible{
   border: 2px solid #2a386f;
   border-radius: 18px;
   padding: 6px 16px;
-  min-width: 100px;
+  min-width: 140px;
   text-align: center;
   color: var(--accent-2);
 }
@@ -515,25 +561,48 @@ button:focus-visible, input:focus-visible{
   font-weight: 800;
 }
 
-/* Times Table Sprint - Answer Section */
-.answer-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
+/* Compact keypad for sprint mode */
+.sprint-layout .keypad {
+  width: 240px;
+  gap: 8px;
+}
+
+.sprint-layout .key {
+  font-size: 24px;
+  padding: 12px 8px;
+  min-height: 54px;
+}
+
+/* Mobile adjustments for Times Table Sprint */
+@media (max-width: 767px) {
+  .sprint-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .keypad-column {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .sprint-layout .keypad {
+    width: 100%;
+  }
+
+  .problems-grid {
+    max-height: 400px;
+  }
 }
 
 /* iPad optimizations for Times Table Sprint */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-  .problems-grid {
-    max-width: 700px;
-    gap: 12px;
+  .sprint-layout .keypad {
+    width: 280px;
   }
 
-  .problem-item {
-    padding: 16px 18px;
-    font-size: 22px;
+  .sprint-layout .key {
+    min-height: 60px;
   }
 
   .factor-grid {
@@ -549,16 +618,6 @@ button:focus-visible, input:focus-visible{
 
 /* Landscape iPad optimizations for Times Table Sprint */
 @media screen and (min-width: 1024px) and (orientation: landscape) {
-  .problems-grid {
-    max-width: 800px;
-    gap: 14px;
-  }
-
-  .problem-item {
-    padding: 18px 20px;
-    font-size: 24px;
-  }
-
   .factor-grid {
     grid-template-columns: repeat(10, minmax(0, 1fr));
   }

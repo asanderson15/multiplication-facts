@@ -19,6 +19,7 @@ export default class TimesTableSprint extends Game {
       timerHandle: null,
     };
 
+    this.currentAnswer = ''; // Track current answer being typed
     this.elements = {};
     this.boundKeydownHandler = null;
   }
@@ -77,16 +78,14 @@ export default class TimesTableSprint extends Game {
           </div>
         </header>
 
-        <div class="stage">
-          <div class="problems-grid" aria-label="Times table problems">
-            <!-- Problems will be generated here -->
+        <div class="sprint-layout">
+          <div class="problems-column">
+            <div class="problems-grid" aria-label="Times table problems">
+              <!-- Problems will be generated here -->
+            </div>
           </div>
 
-          <div class="answer-section">
-            <div class="answer-wrap">
-              <div class="answer-input" aria-label="Your answer" role="textbox" aria-readonly="true"></div>
-            </div>
-
+          <div class="keypad-column">
             <div class="keypad" aria-label="On-screen keypad">
               <button class="key">7</button>
               <button class="key">8</button>
@@ -136,7 +135,6 @@ export default class TimesTableSprint extends Game {
       timerEl: this.container.querySelector('.sprint-timer'),
       progressEl: this.container.querySelector('.sprint-progress'),
       problemsGrid: this.container.querySelector('.problems-grid'),
-      answerEl: this.container.querySelector('.answer-input'),
       keypad: this.container.querySelector('.keypad'),
       sumFactor: this.container.querySelector('.sum-factor'),
       sumTime: this.container.querySelector('.sum-time'),
@@ -253,7 +251,8 @@ export default class TimesTableSprint extends Game {
       }
 
       div.innerHTML = `
-        <span class="problem-text">${problem.a} × ${problem.b} = <span class="problem-answer">?</span></span>
+        <span class="problem-text">${problem.a} × ${problem.b} =</span>
+        <span class="problem-input-box"></span>
         <span class="problem-check">✓</span>
       `;
 
@@ -269,11 +268,29 @@ export default class TimesTableSprint extends Game {
       item.classList.toggle('active', index === this.state.currentIndex && this.state.running);
       item.classList.toggle('completed', problem.completed);
 
+      const inputBox = item.querySelector('.problem-input-box');
       if (problem.completed) {
-        const answerSpan = item.querySelector('.problem-answer');
-        answerSpan.textContent = problem.result;
+        inputBox.textContent = problem.result;
+      } else if (index === this.state.currentIndex) {
+        inputBox.textContent = this.getCurrentAnswer();
+      } else {
+        inputBox.textContent = '';
       }
     });
+  }
+
+  getCurrentAnswer() {
+    // Get current answer from a hidden input element or state
+    return this.currentAnswer || '';
+  }
+
+  updateCurrentProblemAnswer() {
+    const items = this.elements.problemsGrid.querySelectorAll('.problem-item');
+    const currentItem = items[this.state.currentIndex];
+    if (currentItem) {
+      const inputBox = currentItem.querySelector('.problem-input-box');
+      inputBox.textContent = this.currentAnswer || '';
+    }
   }
 
   updateTimer() {
@@ -289,8 +306,8 @@ export default class TimesTableSprint extends Game {
   submitAnswer() {
     if (!this.state.running) return;
 
-    const val = Number(this.elements.answerEl.textContent.trim());
-    if (Number.isNaN(val) || this.elements.answerEl.textContent.trim() === '') return;
+    const val = Number(this.currentAnswer.trim());
+    if (Number.isNaN(val) || this.currentAnswer.trim() === '') return;
 
     const currentProblem = this.state.problems[this.state.currentIndex];
     const correct = (val === currentProblem.result);
@@ -306,7 +323,7 @@ export default class TimesTableSprint extends Game {
       }
 
       // Clear input
-      this.elements.answerEl.textContent = '';
+      this.currentAnswer = '';
 
       // Move to next problem or end game
       if (this.state.currentIndex < this.state.problems.length - 1) {
@@ -363,12 +380,14 @@ export default class TimesTableSprint extends Game {
       return;
     }
     if (key.classList.contains('back')) {
-      this.elements.answerEl.textContent = this.elements.answerEl.textContent.slice(0, -1);
+      this.currentAnswer = this.currentAnswer.slice(0, -1);
+      this.updateCurrentProblemAnswer();
       return;
     }
     if (/\d/.test(label)) {
-      if (this.elements.answerEl.textContent.length < 3) {
-        this.elements.answerEl.textContent += label;
+      if (this.currentAnswer.length < 3) {
+        this.currentAnswer += label;
+        this.updateCurrentProblemAnswer();
       }
     }
   }
@@ -385,14 +404,16 @@ export default class TimesTableSprint extends Game {
 
     if (e.key === 'Backspace' || e.key === 'Delete') {
       e.preventDefault();
-      this.elements.answerEl.textContent = this.elements.answerEl.textContent.slice(0, -1);
+      this.currentAnswer = this.currentAnswer.slice(0, -1);
+      this.updateCurrentProblemAnswer();
       return;
     }
 
     if (/^\d$/.test(e.key)) {
       e.preventDefault();
-      if (this.elements.answerEl.textContent.length < 3) {
-        this.elements.answerEl.textContent += e.key;
+      if (this.currentAnswer.length < 3) {
+        this.currentAnswer += e.key;
+        this.updateCurrentProblemAnswer();
       }
       return;
     }
