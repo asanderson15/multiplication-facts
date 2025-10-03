@@ -10,6 +10,13 @@ const gameRegistry = {
     description: 'Master your times tables',
     color: 'var(--accent)' // green
   },
+  'times-table-sprint': {
+    module: () => import('./games/times-table-sprint.js'),
+    title: 'Times Table Sprint',
+    symbol: '⚡',
+    description: 'Complete full times tables',
+    color: '#9333ea' // purple
+  },
   'addition': {
     module: () => import('./games/addition.js'),
     title: 'Addition Sprint',

@@ -402,3 +402,183 @@ button:focus-visible, input:focus-visible{
   font-size: 16px;
   line-height: 1.4;
 }
+
+/* Times Table Sprint - Factor Selection */
+.factor-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 560px) {
+  .factor-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.factor-chip {
+  background: #0e1732;
+  border: 2px solid #1f2b58;
+  border-radius: 12px;
+  padding: 10px 0;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  color: white;
+  min-height: 48px;
+}
+
+.factor-chip.selected {
+  border-color: var(--accent-2);
+  outline: 2px solid rgba(96, 165, 250, .2);
+}
+
+/* Times Table Sprint - Problems Grid */
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto 20px;
+}
+
+.problem-item {
+  background: #0e1732;
+  border: 2px solid #2a386f;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problem-item.active {
+  border-color: var(--accent-2);
+  background: rgba(96, 165, 250, 0.1);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+  transform: scale(1.02);
+}
+
+.problem-item.completed {
+  background: rgba(110, 231, 183, 0.08);
+  border-color: rgba(110, 231, 183, 0.3);
+  color: var(--muted);
+}
+
+.problem-text {
+  flex: 1;
+}
+
+.problem-answer {
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+.problem-item.completed .problem-answer {
+  color: var(--accent);
+}
+
+.problem-check {
+  font-size: 24px;
+  color: var(--accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.3s ease;
+}
+
+.problem-item.completed .problem-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Times Table Sprint - Timer */
+.sprint-timer {
+  font-size: 38px;
+  font-weight: 800;
+  background: #0e1732;
+  border: 2px solid #2a386f;
+  border-radius: 18px;
+  padding: 6px 16px;
+  min-width: 100px;
+  text-align: center;
+  color: var(--accent-2);
+}
+
+.sprint-progress {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Times Table Sprint - Answer Section */
+.answer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* iPad optimizations for Times Table Sprint */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .problems-grid {
+    max-width: 700px;
+    gap: 12px;
+  }
+
+  .problem-item {
+    padding: 16px 18px;
+    font-size: 22px;
+  }
+
+  .factor-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .factor-chip {
+    min-height: 52px;
+    font-size: 20px;
+  }
+}
+
+/* Landscape iPad optimizations for Times Table Sprint */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  .problems-grid {
+    max-width: 800px;
+    gap: 14px;
+  }
+
+  .problem-item {
+    padding: 18px 20px;
+    font-size: 24px;
+  }
+
+  .factor-grid {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+}
+
+/* Flash animations for problems */
+.problem-item.correct {
+  animation: flash-correct 0.4s ease;
+}
+
+.problem-item.wrong {
+  animation: flash-wrong 0.4s ease;
+}
+
+@keyframes flash-correct {
+  0%, 100% { background: rgba(110, 231, 183, 0.08); }
+  50% { background: rgba(110, 231, 183, 0.25); }
+}
+
+@keyframes flash-wrong {
+  0%, 100% { background: rgba(255, 107, 107, 0.1); }
+  50% { background: rgba(255, 107, 107, 0.3); }
+}

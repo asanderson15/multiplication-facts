@@ -32,12 +32,23 @@ export class Leaderboard {
       date: new Date().toISOString()
     });
 
-    // Sort by score desc, accuracy desc, then date desc
-    data.sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      if (b.accuracy !== a.accuracy) return b.accuracy - a.accuracy;
-      return new Date(b.date) - new Date(a.date);
-    });
+    // Check if this is times-table-sprint
+    const isSprintMode = this.gameId === 'times-table-sprint';
+
+    if (isSprintMode) {
+      // Sort by time ascending (shortest first), then date desc
+      data.sort((a, b) => {
+        if (a.time !== b.time) return a.time - b.time;
+        return new Date(b.date) - new Date(a.date);
+      });
+    } else {
+      // Sort by score desc, accuracy desc, then date desc
+      data.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        if (b.accuracy !== a.accuracy) return b.accuracy - a.accuracy;
+        return new Date(b.date) - new Date(a.date);
+      });
+    }
 
     // Keep top 25
     localStorage.setItem(this.storageKey, JSON.stringify(data.slice(0, 25)));
@@ -58,35 +69,66 @@ export class Leaderboard {
 
   renderBoard(container) {
     const entries = this.loadAll();
-    const rows = entries.map(entry => {
-      const date = new Date(entry.date);
-      const dateStr = formatDate(date);
-      return `<tr>
-        <td>${entry.score}</td>
-        <td>${entry.accuracy}%</td>
-        <td>${entry.total}</td>
-        <td>${entry.time}s</td>
-        <td>${entry.tables}</td>
-        <td>${dateStr}</td>
-      </tr>`;
-    }).join('');
 
-    container.innerHTML = `
-      <table class="board-table" aria-label="High scores">
-        <thead>
-          <tr>
-            <th>Correct</th>
-            <th>Accuracy</th>
-            <th>Answered</th>
-            <th>Time</th>
-            <th>Tables</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows || '<tr><td colspan="6">No scores yet</td></tr>'}
-        </tbody>
-      </table>
-    `;
+    // Check if this is times-table-sprint (has 'factor' instead of 'score')
+    const isSprintMode = this.gameId === 'times-table-sprint';
+
+    if (isSprintMode) {
+      const rows = entries.map(entry => {
+        const date = new Date(entry.date);
+        const dateStr = formatDate(date);
+        return `<tr>
+          <td>${entry.factor}×</td>
+          <td>${entry.time}s</td>
+          <td>${dateStr}</td>
+        </tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <table class="board-table" aria-label="High scores">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Time</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows || '<tr><td colspan="3">No scores yet</td></tr>'}
+          </tbody>
+        </table>
+      `;
+    } else {
+      const rows = entries.map(entry => {
+        const date = new Date(entry.date);
+        const dateStr = formatDate(date);
+        return `<tr>
+          <td>${entry.score}</td>
+          <td>${entry.accuracy}%</td>
+          <td>${entry.total}</td>
+          <td>${entry.time}s</td>
+          <td>${entry.tables}</td>
+          <td>${dateStr}</td>
+        </tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <table class="board-table" aria-label="High scores">
+          <thead>
+            <tr>
+              <th>Correct</th>
+              <th>Accuracy</th>
+              <th>Answered</th>
+              <th>Time</th>
+              <th>Tables</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows || '<tr><td colspan="6">No scores yet</td></tr>'}
+          </tbody>
+        </table>
+      `;
+    }
   }
 }
